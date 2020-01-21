@@ -1,0 +1,66 @@
+﻿  computeshaderclass.cpp
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(12): warning C4005: “DXGI_STATUS_OCCLUDED”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(52937): note: 参见“DXGI_STATUS_OCCLUDED”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(13): warning C4005: “DXGI_STATUS_CLIPPED”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(52946): note: 参见“DXGI_STATUS_CLIPPED”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(14): warning C4005: “DXGI_STATUS_NO_REDIRECTION”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(52955): note: 参见“DXGI_STATUS_NO_REDIRECTION”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(15): warning C4005: “DXGI_STATUS_NO_DESKTOP_ACCESS”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(52964): note: 参见“DXGI_STATUS_NO_DESKTOP_ACCESS”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(16): warning C4005: “DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(52973): note: 参见“DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(17): warning C4005: “DXGI_STATUS_MODE_CHANGED”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(52982): note: 参见“DXGI_STATUS_MODE_CHANGED”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(18): warning C4005: “DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(52991): note: 参见“DXGI_STATUS_MODE_CHANGE_IN_PROGRESS”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(21): warning C4005: “DXGI_ERROR_INVALID_CALL”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53006): note: 参见“DXGI_ERROR_INVALID_CALL”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(22): warning C4005: “DXGI_ERROR_NOT_FOUND”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53015): note: 参见“DXGI_ERROR_NOT_FOUND”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(23): warning C4005: “DXGI_ERROR_MORE_DATA”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53024): note: 参见“DXGI_ERROR_MORE_DATA”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(24): warning C4005: “DXGI_ERROR_UNSUPPORTED”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53033): note: 参见“DXGI_ERROR_UNSUPPORTED”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(25): warning C4005: “DXGI_ERROR_DEVICE_REMOVED”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53042): note: 参见“DXGI_ERROR_DEVICE_REMOVED”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(26): warning C4005: “DXGI_ERROR_DEVICE_HUNG”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53051): note: 参见“DXGI_ERROR_DEVICE_HUNG”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(27): warning C4005: “DXGI_ERROR_DEVICE_RESET”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53061): note: 参见“DXGI_ERROR_DEVICE_RESET”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(28): warning C4005: “DXGI_ERROR_WAS_STILL_DRAWING”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53070): note: 参见“DXGI_ERROR_WAS_STILL_DRAWING”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(29): warning C4005: “DXGI_ERROR_FRAME_STATISTICS_DISJOINT”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53080): note: 参见“DXGI_ERROR_FRAME_STATISTICS_DISJOINT”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(30): warning C4005: “DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53089): note: 参见“DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(31): warning C4005: “DXGI_ERROR_DRIVER_INTERNAL_ERROR”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53099): note: 参见“DXGI_ERROR_DRIVER_INTERNAL_ERROR”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(32): warning C4005: “DXGI_ERROR_NONEXCLUSIVE”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53108): note: 参见“DXGI_ERROR_NONEXCLUSIVE”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(33): warning C4005: “DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53117): note: 参见“DXGI_ERROR_NOT_CURRENTLY_AVAILABLE”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(34): warning C4005: “DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53127): note: 参见“DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(35): warning C4005: “DXGI_ERROR_REMOTE_OUTOFMEMORY”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53136): note: 参见“DXGI_ERROR_REMOTE_OUTOFMEMORY”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(917): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53400): note: 参见“D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(918): warning C4005: “D3D11_ERROR_FILE_NOT_FOUND”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53409): note: 参见“D3D11_ERROR_FILE_NOT_FOUND”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(919): warning C4005: “D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53419): note: 参见“D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d11.h(920): warning C4005: “D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53428): note: 参见“D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(608): warning C4005: “D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53376): note: 参见“D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS”的前一个定义
+c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(609): warning C4005: “D3D10_ERROR_FILE_NOT_FOUND”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.15063.0\shared\winerror.h(53385): note: 参见“D3D10_ERROR_FILE_NOT_FOUND”的前一个定义
+c:\users\xyskin\documents\visual studio 2017\projects\directx-shadowmap\engine\engine\computeshaderclass.cpp(108): warning C4305: “参数”: 从“double”到“FLOAT”截断
+c:\users\xyskin\documents\visual studio 2017\projects\directx-shadowmap\engine\engine\computeshaderclass.cpp(113): warning C4305: “参数”: 从“double”到“FLOAT”截断
+c:\users\xyskin\documents\visual studio 2017\projects\directx-shadowmap\engine\engine\computeshaderclass.cpp(118): warning C4305: “参数”: 从“double”到“FLOAT”截断
+c:\users\xyskin\documents\visual studio 2017\projects\directx-shadowmap\engine\engine\computeshaderclass.cpp(119): warning C4305: “=”: 从“double”到“float”截断
+c:\users\xyskin\documents\visual studio 2017\projects\directx-shadowmap\engine\engine\computeshaderclass.cpp(123): warning C4305: “参数”: 从“double”到“FLOAT”截断
+c:\users\xyskin\documents\visual studio 2017\projects\directx-shadowmap\engine\engine\computeshaderclass.cpp(61): warning C4101: “outputBuffer”: 未引用的局部变量
+c:\users\xyskin\documents\visual studio 2017\projects\directx-shadowmap\engine\engine\computeshaderclass.cpp(53): warning C4101: “outputBufferDesc”: 未引用的局部变量
+  Engine.vcxproj -> C:\Users\xyskin\Documents\Visual Studio 2017\Projects\DirectX-ShadowMap\Engine\Debug\Engine.exe
+  Engine.vcxproj -> C:\Users\xyskin\Documents\Visual Studio 2017\Projects\DirectX-ShadowMap\Engine\Debug\Engine.pdb (Partial PDB)

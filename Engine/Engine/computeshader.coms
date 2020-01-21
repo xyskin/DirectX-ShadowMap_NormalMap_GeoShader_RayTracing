@@ -1,0 +1,208 @@
+#define WIDTH 800
+#define HEIGHT 600
+#define SPHERE_COUNT 6
+#define RANDOM_TIME 10
+#define NEAR 0.0000001f
+#define FAR 1000.0f
+#define MATH_PI 3.14159265358f
+#define INV_PI 0.01745329252f
+
+cbuffer ConstB : register(c0)
+{
+	float3 camPos;
+	float sphereCount;
+	float3 lookAt;
+	float p2;
+};
+
+struct RandomPoint
+{
+	float3 pos;
+	float padding;
+};
+
+cbuffer Random : register(c1)
+{
+	RandomPoint r[100];
+};
+
+struct Sphere
+{
+	float3 center;
+	float radius;
+	float3 color;
+	float material;
+};
+
+struct Hit
+{
+	float hitDistance;
+	int sphereIdx;
+};
+
+StructuredBuffer<Sphere> input : register(t0);
+RWTexture2D<float4> output : register(u0);
+
+Hit HitRay(float3 from, float3 to, StructuredBuffer<Sphere> obj);
+float4 Color(float3 from, float3 to, StructuredBuffer<Sphere> obj, uint co);
+float schlick(float cosine, float refractiveIdx);
+
+float schlick(float cosine, float refractiveIdx)
+{
+	float r0 = (float(1) - refractiveIdx) / (float(1) + refractiveIdx);
+	//r0 = pow(r0, 2);
+	r0 = r0 * r0;
+	float c5 = pow((1 - cosine), 5);
+	return r0 + (1 - r0) * c5;
+}
+
+float3 refractCus(float3 dir, float3 nor, float idx)
+{
+	float dt = dot(dir, nor);
+	float delta = 1 - pow(idx, 2) * (1 - pow(dt, 2));
+	return lerp(float3(0, 0, 0), idx*(dir - nor * dt) - nor * sqrt(delta), sign(saturate(delta)));
+}
+
+float4 Color(float3 from, float3 to, StructuredBuffer<Sphere> obj, uint co)
+{
+	//Hit hit = HitRay(from, to, obj);
+	//float hitAnything = sign(FAR - hit.hitDistance);
+	//float3 dir = normalize(to - from);
+	////float4 rayColor = float4(0.5 * (normalize(from + hit.hitDistance * dir - obj[hit.sphereIdx].center) * float3(1, 1, -1) + float3(1, 1, 1)), 1);
+	//float4 rayColor = 0.5 * float4(obj[hit.sphereIdx].color, 1);
+
+	//float bgt = 0.5 - dir.y * 0.5;
+	//float4 bgColor = lerp(float4(0.5, 0.7, 1, 1), float4(1, 1, 1, 1), bgt);
+	//
+	//if(hitAnything > 0)
+	//{	
+	//	RandomRef ref = RandomReflection(from + hit.hitDistance * dir, from + hit.hitDistance * dir - obj[hit.sphereIdx].center, to.xy);
+	//	float4 tempColor = Color(from + hit.hitDistance * dir, ref.dir, obj);
+	//	rayColor += 0.5 * tempColor;
+	//}
+	//
+	//return lerp(bgColor, rayColor, hitAnything);
+
+	float4 finalColor; //= float4(0, 0, 0, 0);
+	float4 rayColor;
+	float3 rayBegin = from;
+	float3 rayEnd = to;
+	float hitAnything;
+
+	Hit hit = HitRay(rayBegin, rayEnd, obj);
+	hitAnything = sign(FAR - hit.hitDistance);
+	float3 dir = normalize(rayEnd - rayBegin);
+	float4 bgColor = lerp(float4(0.5, 0.5, 1, 1), float4(1, 1, 1, 1), 0.5 - dir.y * 0.5);
+	rayColor = float4(obj[hit.sphereIdx].color, 1);
+	finalColor = lerp(bgColor, rayColor, hitAnything);
+
+	for(int times = 1; hitAnything > 0 && times < 50; times ++)
+	{
+		float material = obj[hit.sphereIdx].material;
+		rayBegin = rayBegin + hit.hitDistance * dir;
+		float3 hitPointNormal = normalize(rayBegin - obj[hit.sphereIdx].center);
+		rayEnd = hitPointNormal + rayBegin + r[co].pos;
+		float3 metalRefDir = reflect(dir, hitPointNormal);
+		float3 metalRefEnd = rayBegin + metalRefDir + r[co].pos * (1 - material);
+		float dt = dot(dir, hitPointNormal);
+		
+		float inorout = sign(saturate(dt));
+		float3 refractDir = lerp(
+			refract(dir, hitPointNormal, -(1 / material)), 
+			refract(dir, -hitPointNormal, -(material)), 
+			inorout);
+		float cosine = lerp(
+			-dt, 
+			//dot(dir, hitPointNormal),
+			sqrt(1 - pow(material, 2) * (1 - pow(dt, 2))), 
+			inorout);
+		float sch = lerp(1, schlick(cosine, lerp(-(1 / material), 
+			-material, inorout)), sign(dot(refractDir, refractDir)));
+
+		float3 refractEnd = rayBegin + lerp(refractDir, metalRefDir, sign(saturate(sch - (1 + r[co].pos.x / 2))));
+		rayEnd = lerp(rayEnd, metalRefEnd, sign(saturate(material)));
+		rayEnd = lerp(rayEnd, refractEnd, sign(saturate(-material)));
+		
+		hit = HitRay(rayBegin, rayEnd, obj);
+		hitAnything = sign(FAR - hit.hitDistance);
+		dir = normalize(rayEnd - rayBegin);
+
+		rayColor = lerp(bgColor, float4(obj[hit.sphereIdx].color, 1), hitAnything);
+		
+		finalColor *= rayColor;
+	}
+	return finalColor;
+}
+
+Hit HitRay(float3 from, float3 to, StructuredBuffer<Sphere> obj)
+{
+	float3 dir = normalize(to - from);
+	Hit result;
+	result.hitDistance = FAR;
+	result.sphereIdx = 0;
+	for(int i = 0; i < sphereCount; i++)
+	{
+		float3 oc = from - obj[i].center;
+		float a = dot(dir, dir);
+		float b = 2.0f * dot(dir, oc);
+		float c = dot(oc, oc) - pow(obj[i].radius, 2);
+		float delta = pow(b, 2) - 4.0f * a * c;
+		float oor1 = sign(saturate(delta));
+		delta = oor1 * delta;
+		float t = ((-b - sqrt(delta)) / a * 0.5f) * oor1;
+		float temp;
+		//if(t > NEAR)
+		//{	
+		//	temp = t;
+		//	
+		//}
+		//else
+		//{
+		//	temp = ((-b + sqrt(delta)) / a * 0.5f) * oor1;
+		//}
+		float l = sign(saturate(t - NEAR));
+		temp = lerp(((-b + sqrt(delta)) / a * 0.5f) * oor1, t, l);
+
+		//if(temp > NEAR && temp < result.hitDistance)
+		//{
+		//	result.sphereIdx = i;
+		//	result.hitDistance = temp;
+		//}
+		l = sign(saturate(temp - NEAR)) * sign(saturate(result.hitDistance - temp));
+		result.sphereIdx = lerp(result.sphereIdx, i, l);
+		result.hitDistance = lerp(result.hitDistance, temp, l);
+	}
+	return result;
+}
+
+[numthreads(1, 1, 1)]
+void ComShader(int3 DTID : SV_DISPATCHTHREADID)
+{
+	float theta = float(80) * INV_PI;
+	float half_height = tan(theta / float(2));
+	float half_width = half_height * float(WIDTH) / float(HEIGHT);
+	//float3 upleft = float3(-2, 1.5, 1);
+
+	float u = float(DTID.x) / float(WIDTH);
+	float v = float(DTID.y) / float(HEIGHT);
+
+	float3 up = float3(0, 1, 0);
+	float3 dw = normalize(lookAt - camPos);
+	float3 du = normalize(cross(up, dw));
+	float3 dv = normalize(cross(du, dw));
+
+	float3 upleft = camPos + dw - half_height * dv - half_width * du;
+
+	float4 color = float4(0, 0, 0, 0);
+	for(int i = 0; i < RANDOM_TIME; i++)
+	{
+		for(int j = 0; j < RANDOM_TIME; j++)
+		{
+			float ru = 1.0f / float(RANDOM_TIME) / float(WIDTH) * float(i);
+			float rv = 1.0f / float(RANDOM_TIME) / float(HEIGHT) * float(j);
+			float3 to = upleft + (u + ru) * half_width * 2 * du + (v + rv) * half_height * 2 * dv;float3((u + ru) * float(4), -((v + rv) * float(3)), 0);
+			color += Color(camPos, to, input, i * 10 + j);
+		}
+	}
+	output[DTID.xy] = color / pow(RANDOM_TIME, 2);
+}

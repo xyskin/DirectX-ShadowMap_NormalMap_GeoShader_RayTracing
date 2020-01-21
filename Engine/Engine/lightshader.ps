@@ -1,0 +1,69 @@
+Texture2D shaderTexture : register(t0);
+Texture2D shadowMap : register(t1);
+Texture2D normalMap : register(t2);
+SamplerState SampleType : register(s0);
+SamplerState SampleClamp : register(s1);
+
+cbuffer Light : register(c0)
+{
+	float4 ambient;
+	float4 diffuse;
+	float3 lightPos;
+	float padding1;
+	float3 viewPos;
+	float padding2;
+};
+
+struct Pixel
+{
+	float4 position : SV_POSITION;
+	float2 uv : TEXCOORD0;
+	float3 normal : NORMAL;
+	float4 worldPos : POSITION1;
+	float4 sPosition : TEXCOORD1;
+	float3 tangent : TANGENT;
+	float3 binormal : BINORMAL;
+};
+
+float4 LightPixelShader(Pixel input) : SV_TARGET
+{
+	float4 color;
+	float4 textureColor;
+	float4 normalColor;
+	float3 lightDir;
+	float lightIntensity;
+	float2 shadowUV;
+	float curdepth;
+	float depth;
+	float spe;
+	int power = 100;
+
+	textureColor = shaderTexture.Sample(SampleType, input.uv);
+	normalColor = (normalMap.Sample(SampleType, input.uv) * 2.0f) - 1.0f;
+	float3 finalNormal = normalize(normalColor.x * input.tangent + normalColor.y * input.binormal + normalColor.z * input.normal);
+	
+	shadowUV.x = input.sPosition.x / input.sPosition.w / 2.0f + 0.5f;
+	shadowUV.y = -input.sPosition.y / input.sPosition.w / 2.0f + 0.5f;
+
+	color = ambient;
+	lightDir = lightPos - input.worldPos.xyz;
+	lightDir = normalize(lightDir);
+	lightIntensity = saturate(dot(finalNormal, lightDir));
+	float3 viewdir = normalize(viewPos - input.worldPos.xyz);
+	float3 reflectdir = normalize(reflect(-lightDir, finalNormal));
+
+	if(saturate(shadowUV.x) == shadowUV.x && saturate(shadowUV.y) == shadowUV.y)
+	{
+		curdepth = input.sPosition.z / input.sPosition.w;
+		depth = shadowMap.Sample(SampleClamp, shadowUV).r + 0.000001f;
+	
+		lightIntensity = lightIntensity * sign(saturate(depth - curdepth));
+		spe = pow(max(dot(viewdir, reflectdir), 0.0f), power) * sign(saturate(depth - curdepth));
+	}
+
+    color += (diffuse * lightIntensity + diffuse * spe);
+	color = color * textureColor;
+
+    //return float4(finalNormal, 1);
+	return color;
+} 

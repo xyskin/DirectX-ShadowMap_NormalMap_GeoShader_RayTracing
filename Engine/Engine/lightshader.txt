@@ -1,0 +1,149 @@
+Texture2D shaderTexture : register(t0);
+Texture2D shadowMap : register(t1);
+Texture2D normalMap : register(t2);
+SamplerState SampleType : register(s0);
+SamplerState SampleClamp : register(s1);
+
+cbuffer Light : register(b0)
+{
+	float4 ambient;
+	float4 diffuse;
+	float3 lightPos;
+	float padding1;
+	float3 viewPos;
+	float padding2;
+};
+
+cbuffer Matrix : register(b0)
+{
+	matrix world;
+	matrix view;
+	matrix proj;
+	matrix sview;
+	matrix sproj;
+};
+
+cbuffer Variable : register(b1)
+{
+	float4 padding;
+};
+
+struct Vertex
+{
+	float4 position : POSITION0;
+	float2 uv : TEXCOORD0;
+	float3 normal : NORMAL;
+	float3 tangent : TANGENT;
+	float3 binormal : BINORMAL;
+};
+
+struct Geo
+{
+	float4 position : SV_POSITION;
+	float2 uv : TEXCOORD0;
+	float3 normal : NORMAL;
+	float4 worldPos : POSITION1;
+	float4 sPosition : TEXCOORD1;
+	float3 tangent : TANGENT;
+	float3 binormal : BINORMAL;
+};
+
+struct Pixel
+{
+	float4 position : SV_POSITION;
+	float2 uv : TEXCOORD0;
+	float3 normal : NORMAL;
+	float4 worldPos : POSITION1;
+	float4 sPosition : TEXCOORD1;
+	float3 tangent : TANGENT;
+	float3 binormal : BINORMAL;
+};
+
+Geo LightVertexShader(Vertex input)
+{
+	Geo output;
+	input.position.w = 1;
+	output.position = mul(input.position, world);
+	output.worldPos = output.position;
+    output.position = mul(output.position, view);
+    output.position = mul(output.position, proj);
+    
+	output.sPosition = mul(input.position, world);
+	output.sPosition = mul(output.sPosition, sview);
+	output.sPosition = mul(output.sPosition, sproj);
+
+	output.uv = input.uv;
+	output.normal = mul(input.normal, (float3x3)world);
+	output.normal = normalize(output.normal);
+
+	output.tangent = mul(input.tangent, (float3x3)world);
+	output.tangent = normalize(output.tangent);
+
+	output.binormal = mul(input.binormal, (float3x3)world);
+	output.binormal = normalize(output.binormal);
+
+	return output;
+}
+
+float4 LightPixelShader(Pixel input) : SV_TARGET
+{
+	float4 color;
+	float4 textureColor;
+	float4 normalColor;
+	float3 lightDir;
+	float lightIntensity;
+	float2 shadowUV;
+	float curdepth;
+	float depth;
+	float spe;
+	int power = 10;
+
+	textureColor = shaderTexture.Sample(SampleType, input.uv);
+	normalColor = (normalMap.Sample(SampleType, input.uv) * 2.0f) - 1.0f;
+	float3 finalNormal = normalize(normalColor.x * input.tangent + normalColor.y * input.binormal + normalColor.z * input.normal);
+
+	shadowUV.x = input.sPosition.x / input.sPosition.w / 2.0f + 0.5f;
+	shadowUV.y = -input.sPosition.y / input.sPosition.w / 2.0f + 0.5f;
+
+	color = ambient;
+	lightDir = lightPos - input.worldPos.xyz;
+	lightDir = normalize(lightDir);
+	lightIntensity = saturate(dot(finalNormal, lightDir));
+	float3 viewdir = normalize(viewPos - input.worldPos.xyz);
+	float3 reflectdir = normalize(reflect(-lightDir, finalNormal));
+
+	if(saturate(shadowUV.x) == shadowUV.x && saturate(shadowUV.y) == shadowUV.y)
+	{
+		curdepth = input.sPosition.z / input.sPosition.w;
+		depth = shadowMap.Sample(SampleClamp, shadowUV).r + 0.001f;
+	
+		lightIntensity = lightIntensity * sign(saturate(depth - curdepth));
+		spe = pow(max(dot(viewdir, reflectdir), 0.0f), power) * sign(saturate(depth - curdepth));
+	}
+
+    color += (diffuse * lightIntensity + diffuse * spe);
+	color = color * textureColor;
+
+    return color;
+} 
+
+[maxvertexcount(3)]
+void LightGeoShader(triangle Geo input[3], inout TriangleStream<Pixel> output)
+{
+	for(int i = 0; i < 3; i++)
+	{
+		output.Append(input[i]);
+	}
+	output.RestartStrip();
+}
+
+
+technique11 Tech
+{
+	pass P1
+	{
+		SetVertexShader(CompileShader(vs_5_0, LightVertexShader()));
+		SetGeometryShader(CompileShader(gs_5_0, LightGeoShader()));
+		SetPixelShader(CompileShader(ps_5_0, LightPixelShader()));
+	}
+}

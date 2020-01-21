@@ -1,0 +1,23 @@
+struct Pixel
+{
+	float4 position : SV_POSITION;
+	//float2 uv : TEXCOORD0;
+	//float3 normal : NORMAL;
+	//float4 worldPos : POSITION1;
+	//float4 depthPos : POSITION0;
+};
+
+float4 ShadowPixelShader(Pixel input) : SV_TARGET
+{
+	float4 color;
+
+	float depth = input.position.z;
+	//float depth = input.depthPos.z / input.depthPos.w;
+	//float depth = input.depthPos.z;
+	color.a = 1.0f;
+	color.r = depth;
+	color.g = depth;
+	color.b = depth;
+
+    return color;
+} 
