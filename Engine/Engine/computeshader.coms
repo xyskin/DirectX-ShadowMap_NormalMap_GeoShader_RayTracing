@@ -1,7 +1,7 @@
 #define WIDTH 800
 #define HEIGHT 600
 #define SPHERE_COUNT 6
-#define RANDOM_TIME 10
+#define RANDOM_TIME 5
 #define NEAR 0.0000001f
 #define FAR 1000.0f
 #define MATH_PI 3.14159265358f

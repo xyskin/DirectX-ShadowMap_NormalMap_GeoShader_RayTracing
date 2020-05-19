@@ -373,38 +373,38 @@ bool GraphicsClass::Render(InputClass* input)
 	m_shadowCam->Render();
 	m_shadowCam->GetViewMatrix(sview);
 
-	//m_Model->Render(m_D3D->GetDeviceContext());
+	m_Model->Render(m_D3D->GetDeviceContext());
 
-	//D3DXMatrixRotationX(&world, m_ModelPos->GetRotation().x);
-	//D3DXMatrixRotationY(&world, m_ModelPos->GetRotation().y);
-	//D3DXMatrixRotationZ(&world, m_ModelPos->GetRotation().z);
-	//D3DXMatrixTranslation(&world, m_ModelPos->GetPosition().x, m_ModelPos->GetPosition().y, m_ModelPos->GetPosition().z);
+	D3DXMatrixRotationX(&world, m_ModelPos->GetRotation().x);
+	D3DXMatrixRotationY(&world, m_ModelPos->GetRotation().y);
+	D3DXMatrixRotationZ(&world, m_ModelPos->GetRotation().z);
+	D3DXMatrixTranslation(&world, m_ModelPos->GetPosition().x, m_ModelPos->GetPosition().y, m_ModelPos->GetPosition().z);
 
-	//m_lightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), world, view, proj,
-	//	m_PointLightPos->GetPosition(), m_light->GetAmbientColor(), m_light->GetDiffuseColor(), m_Model->GetTexture(),
-	//	sview, sproj, m_renderToTexture->GetShaderResourceView(), time, m_camera->GetPosition(), m_Model->GetNormalMap());
+	m_lightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), world, view, proj,
+		m_PointLightPos->GetPosition(), m_light->GetAmbientColor(), m_light->GetDiffuseColor(), m_Model->GetTexture(),
+		sview, sproj, m_renderToTexture->GetShaderResourceView(), time, m_camera->GetPosition(), m_Model->GetNormalMap());
 
-	//m_Model2->Render(m_D3D->GetDeviceContext());
-	//m_D3D->GetWorldMatrix(world);
-	//D3DXMatrixRotationX(&world, m_Model2Pos->GetRotation().x);
-	//D3DXMatrixRotationY(&world, m_Model2Pos->GetRotation().y);
-	//D3DXMatrixRotationZ(&world, m_Model2Pos->GetRotation().z);
-	//D3DXMatrixTranslation(&world, m_Model2Pos->GetPosition().x, m_Model2Pos->GetPosition().y, m_Model2Pos->GetPosition().z);
+	m_Model2->Render(m_D3D->GetDeviceContext());
+	m_D3D->GetWorldMatrix(world);
+	D3DXMatrixRotationX(&world, m_Model2Pos->GetRotation().x);
+	D3DXMatrixRotationY(&world, m_Model2Pos->GetRotation().y);
+	D3DXMatrixRotationZ(&world, m_Model2Pos->GetRotation().z);
+	D3DXMatrixTranslation(&world, m_Model2Pos->GetPosition().x, m_Model2Pos->GetPosition().y, m_Model2Pos->GetPosition().z);
 
-	//m_lightShader->Render(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), world, view, proj,
-	//	m_PointLightPos->GetPosition(), m_light->GetAmbientColor(), m_light->GetDiffuseColor(), m_Model2->GetTexture(),
-	//	sview, sproj, m_renderToTexture->GetShaderResourceView(), time, m_camera->GetPosition(), m_Model2->GetNormalMap());
+	m_lightShader->Render(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), world, view, proj,
+		m_PointLightPos->GetPosition(), m_light->GetAmbientColor(), m_light->GetDiffuseColor(), m_Model2->GetTexture(),
+		sview, sproj, m_renderToTexture->GetShaderResourceView(), time, m_camera->GetPosition(), m_Model2->GetNormalMap());
 
 
-	//m_lightModel->Render(m_D3D->GetDeviceContext());
-	//m_D3D->GetWorldMatrix(world);
-	//D3DXMatrixRotationX(&world, m_PointLightPos->GetRotation().x);
-	//D3DXMatrixRotationY(&world, m_PointLightPos->GetRotation().y);
-	//D3DXMatrixRotationZ(&world, m_PointLightPos->GetRotation().z);
-	//D3DXMatrixTranslation(&world, m_PointLightPos->GetPosition().x, m_PointLightPos->GetPosition().y, m_PointLightPos->GetPosition().z);
-	//m_lightShader->Render(m_D3D->GetDeviceContext(), m_lightModel->GetIndexCount(), world, view, proj,
-	//	m_PointLightPos->GetPosition(), m_light->GetAmbientColor(), m_light->GetDiffuseColor(), m_lightModel->GetTexture(),
-	//	sview, sproj, NULL, time, m_camera->GetPosition(), m_lightModel->GetNormalMap());
+	m_lightModel->Render(m_D3D->GetDeviceContext());
+	m_D3D->GetWorldMatrix(world);
+	D3DXMatrixRotationX(&world, m_PointLightPos->GetRotation().x);
+	D3DXMatrixRotationY(&world, m_PointLightPos->GetRotation().y);
+	D3DXMatrixRotationZ(&world, m_PointLightPos->GetRotation().z);
+	D3DXMatrixTranslation(&world, m_PointLightPos->GetPosition().x, m_PointLightPos->GetPosition().y, m_PointLightPos->GetPosition().z);
+	m_lightShader->Render(m_D3D->GetDeviceContext(), m_lightModel->GetIndexCount(), world, view, proj,
+		m_PointLightPos->GetPosition(), m_light->GetAmbientColor(), m_light->GetDiffuseColor(), m_lightModel->GetTexture(),
+		sview, sproj, NULL, time, m_camera->GetPosition(), m_lightModel->GetNormalMap());
 	// Present the rendered scene to the screen.
 	m_D3D->EndScene();
 
@@ -446,23 +446,23 @@ bool GraphicsClass::RenderSceneToTexture()
 	D3DXMatrixTranslation(&world, m_Model2Pos->GetPosition().x, m_Model2Pos->GetPosition().y, m_Model2Pos->GetPosition().z);
 
 	m_shadowShader->Render(m_D3D->GetDeviceContext(), m_Model2->GetIndexCount(), world, sview, sproj);
-	m_comShader->Render(m_D3D->GetDeviceContext());
+	//m_comShader->Render(m_D3D->GetDeviceContext());
 
 	m_D3D->SetBackBufferRenderTarget();
 
 	m_D3D->ResetViewport();
 
-	ID3D11Resource* res;
-	ID3D11Texture2D* tex;
+	//ID3D11Resource* res;
+	//ID3D11Texture2D* tex;
 	//m_renderToTexture->GetShaderResourceView()->GetResource(&res);
 	//res->QueryInterface(&tex);
 
-	tex = m_comShader->GetTexture();
+	//tex = m_comShader->GetTexture();
 
-	HRESULT result = D3DX11SaveTextureToFile(m_D3D->GetDeviceContext(), tex, D3DX11_IFF_PNG, L"../Engine/raytracing.png");
-	if (FAILED(result))
-	{
-		return false;
-	}
+	//HRESULT result = D3DX11SaveTextureToFile(m_D3D->GetDeviceContext(), tex, D3DX11_IFF_PNG, L"../Engine/raytracing.png");
+	//if (FAILED(result))
+	//{
+	//	return false;
+	//}
 	return true;
 }
